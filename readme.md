@@ -1,2 +1,1 @@
-
-2
+#### 微信小程序 Promise 封装 Api，使用async/await异步处理
