@@ -1,18 +1,12 @@
 const app = getApp();
-const { regeneratorRuntime, promisify, requestApi } = app;
-const loginApi = promisify(wx.login);
+const { regeneratorRuntime, requestApi, getStorageApi, removeStorageApi } = app;
 
 Page({
   data: {
 
   },
   onLoad: async function () {
-    try {
-      let resLogin = await loginApi();
-      console.log('登录 success code：' + JSON.stringify(resLogin));
-    } catch (err) {
-      console.log('登录 fail code：' + JSON.stringify(resLogin));
-    }
+    console.log('onLoad start')
     try {
       let res = await requestApi({
         url: 'http://sz.chigua.ineice.cn/miniapps-api/auth/token',
@@ -31,6 +25,22 @@ Page({
     }
    },
   onShow: async function(){
-
+    let d = (await getStorageApi({
+      key: 'key'
+    })).data
+    console.log('onShow' + d)
+  },
+  onHide: async function () {
+    await removeStorageApi({
+      key: 'key'
+    })
+    try {
+      let d = await getStorageApi({
+        key: 'key'
+      })
+      console.log('onHide' + d.data)
+    } catch (err) {
+      console.log('onHide' + JSON.stringify(err))
+    }
   }
 })
